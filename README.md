@@ -23,7 +23,7 @@ Criar um script em python que simule o jogo pac-man sem a utilização de biblio
 
 ### Divisão de classes
 
-|  | PAC-MAN | COMIDA | TEMPLATE | FANTASMA | PONTOS | PONTUAÇÃO |
+|  | PAC-MAN | COMIDA | MAPA | FANTASMA | PONTOS | PONTUAÇÃO |
 | --- | --- | --- | --- | --- | --- | --- |
 | Honda |  |  |X|  |  |  |
 | Rafa |  |  |  |  |  |  |
