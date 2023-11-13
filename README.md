@@ -25,7 +25,7 @@ Criar um script em python que simule o jogo pac-man sem a utilização de biblio
 
 |  | PAC-MAN | COMIDA | TEMPLATE | FANTASMA | PONTOS | PONTUAÇÃO |
 | --- | --- | --- | --- | --- | --- | --- |
-| Honda |  |  |X |  |  |  |
+| Honda |  |  |X|  |  |  |
 | Rafa |  |  |  |  |  |  |
 | Tiago |  |  |  |  |  |  |
 | Julio |  |  |  |  |  |  |
