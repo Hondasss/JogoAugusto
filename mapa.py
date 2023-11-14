@@ -18,10 +18,3 @@ class Mapa:
         for i in range(self.altura):
             self.plano[i][0] = '#' #Lateral esquerda
             self.plano[i][self.largura - 1] = '#' #Lateral direita 
-
-#Testando impressão do mapa - DEPOIS MUDAR PARA WHILE QUANDO PASSAR PARA O MAIN PARA FICAR IMPRIMINDO O MAPA CONTINUAMENTE
-if __name__ == "__main__":
-    game_map = Mapa(largura=25, altura=25)
-
-    for row in game_map.plano:
-        print(' '.join(row))
