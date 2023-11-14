@@ -2,7 +2,8 @@
 import time
 import os
 import cursor
-import WConio2 as WConio2
+import msvcrt
+
 #Importação de classes
 from mapa import Mapa
 from pacman import Pacman
@@ -14,14 +15,16 @@ def main():
     pacman = Pacman("a", 5, 15)
     simbolo = ''
 
-    while (simbolo != "o"): #Impressão do mapa em um loop WHILE, com saída somente caso a tecla O seja inserida
-        WConio2.gotoxy(0,0) #Posiciona o cursor no começo da tela, não sendo necessário apagar a impressão anterior do mapa
-        cursor.hide() #Esconde o cursor
+    while (simbolo != "o"):
+        os.system('cls')
+        cursor.hide()
         dimensoesMapa.atualizaCaractere(pacman.pacman, pacman.linha, pacman.coluna)
-        dimensoesMapa.imprimir() #Chama a função de impressão
+        dimensoesMapa.imprimir()
 
-        if WConio2.kbhit(): #Pega interação do usuário
-            (tecla, simbolo) = WConio2.getch()
+        time.sleep(0.1)
+
+        if msvcrt.kbhit():
+            tecla = msvcrt.getch().decode()
             if tecla == 'a' or tecla == 'A':
                 pacman.moverEsquerda()
             elif tecla == 'd' or tecla == 'D':

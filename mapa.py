@@ -21,18 +21,14 @@ class Mapa:
             self.plano[i][0] = '#' #Lateral esquerda
             self.plano[i][self.largura - 1] = '#' #Lateral direita 
 
-    def atualizaCaractere(self, caractere, linha, coluna): #Atualização do caractere para detecção de movimentação
-
+    def atualizaCaractere(self, caractere, linha, coluna):
         # Limpa a posição anterior do Pacman
         self.limparPosicao(self.linhaPacmanAnterior, self.colunaPacmanAnterior)
 
-        #Proteção do script para verificação da linha e coluna dentro do limiet máximo
-        if 0 <= linha: 
-            if linha < self.altura:
-                if 0 <= coluna:
-                    if coluna < self.largura:
-                        self.linhaPacmanAnterior, self.colunaPacmanAnterior = linha, coluna
-                        self.plano[linha][coluna] = caractere
+        # Proteção do script para verificação da linha e coluna dentro do limite máximo
+        if 0 <= linha < self.altura and 0 <= coluna < self.largura:
+            self.linhaPacmanAnterior, self.colunaPacmanAnterior = linha, coluna
+            self.plano[linha][coluna] = caractere
 
     def limparPosicao(self, linha,  coluna):
         # Limpa a posição anterior do Pacman
