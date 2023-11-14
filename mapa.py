@@ -6,8 +6,10 @@ class Mapa:
         self.altura = altura
 
         #Iniciando uma matriz que representará toda a área do jogo, sendo essa ALTURA x LARGURA
-        self.plano = [['.' for coluna in range(largura)] for linha in range(altura)] #O ponto representa o valor inicial de cada célula na matriz
+        self.plano = [[' ' for coluna in range(largura)] for linha in range(altura)] #O ponto representa o valor inicial de cada célula na matriz
         self.bordas() #O método é chamado aqui para criar as bordas desde o inicio do jogo, garantindo solidez e evitando erros
+        self.linhaPacmanAnterior = 0  
+        self.colunaPacmanAnterior = 0  
 
     def bordas(self):
         #Método que adiciona as bordas delimitadas por #
@@ -18,3 +20,24 @@ class Mapa:
         for i in range(self.altura):
             self.plano[i][0] = '#' #Lateral esquerda
             self.plano[i][self.largura - 1] = '#' #Lateral direita 
+
+    def atualizaCaractere(self, caractere, linha, coluna): #Atualização do caractere para detecção de movimentação
+
+        # Limpa a posição anterior do Pacman
+        self.limparPosicao(self.linhaPacmanAnterior, self.colunaPacmanAnterior)
+
+        #Proteção do script para verificação da linha e coluna dentro do limiet máximo
+        if 0 <= linha: 
+            if linha < self.altura:
+                if 0 <= coluna:
+                    if coluna < self.largura:
+                        self.linhaPacmanAnterior, self.colunaPacmanAnterior = linha, coluna
+                        self.plano[linha][coluna] = caractere
+
+    def limparPosicao(self, linha,  coluna):
+        # Limpa a posição anterior do Pacman
+        self.plano[linha][coluna] = ' '
+
+    def imprimir(self): #Impressão
+        for linha in self.plano:
+            print(''.join(linha))
