@@ -25,11 +25,11 @@ Criar um script em python que simule o jogo pac-man sem a utilização de biblio
 
 |  | PAC-MAN | COMIDA | MAPA | FANTASMA | PONTOS | PONTUAÇÃO |
 | --- | --- | --- | --- | --- | --- | --- |
-| Honda |  |  |X|  |  |  |
-| Rafa |  |  |  |  |  |  |
-| Tiago |  |  |  |  |  |  |
+| Honda | x |  |X|  |  |  |
+| Rafa |  |  |  |  | x | x |
+| Tiago | x |  |  |  |  |  |
 | Julio |  |  |  |  |  |  |
-| Eric |  |  |  |  |  |  |
+| Eric | x |  | x |  |  |  |
 
 ### Salvando caracteres
 
