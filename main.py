@@ -3,6 +3,7 @@ import time
 import os
 import cursor
 import msvcrt
+import WConio2 as WConio2
 
 #Importação de classes
 from mapa import Mapa
@@ -16,12 +17,13 @@ def main():
     simbolo = ''
 
     while (simbolo != "o"):
-        os.system('cls')
+        WConio2.gotoxy(0,0)
+        #os.system('cls')
         cursor.hide()
         dimensoesMapa.atualizaCaractere(pacman.pacman, pacman.linha, pacman.coluna)
         dimensoesMapa.imprimir()
 
-        time.sleep(0.1)
+       # time.sleep(0.1)
 
         if msvcrt.kbhit():
             tecla = msvcrt.getch().decode()
