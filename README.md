@@ -33,4 +33,4 @@ Criar um script em python que simule o jogo pac-man sem a utilização de biblio
 
 ### Salvando caracteres
 
-ᗣ is U+15E3, ᗤ U+15E4, and ᗧ U+15E7.
+ᗣ is U+15E3, ᗢ U+15E2, ᗤ U+15E4, and ᗧ U+15E7.
