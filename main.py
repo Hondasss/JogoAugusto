@@ -30,13 +30,13 @@ def main():
         if msvcrt.kbhit():
             tecla = msvcrt.getch().decode()
             if tecla == 'a' or tecla == 'A':
-                pacman.moverEsquerda()
+                pacman.moverEsquerda(dimensoesMapa.plano)
             elif tecla == 'd' or tecla == 'D':
-                pacman.moverDireita()
+                pacman.moverDireita(dimensoesMapa.plano)
             elif tecla == 'w' or tecla == 'W':
-                pacman.moverCima()
+                pacman.moverCima(dimensoesMapa.plano)
             elif tecla == 's' or tecla == 'S':
-                pacman.moverBaixo()
+                pacman.moverBaixo(dimensoesMapa.plano)
         
 if __name__ == "__main__":
     main()
