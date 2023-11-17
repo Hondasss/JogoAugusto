@@ -14,6 +14,9 @@ from paredesMapa import Paredes
 from fantasmas import Fantasmas
 from arquivos import *
 
+#Adiciona a função de salvar no arquivo
+from arquivos import ordenar_pontuacoes, gravaNomeJogador, gravaPontuacao
+
 def main():
     tela_inicial = TelaInicial()
     opcao_jogador = tela_inicial.mostrar_tela_inicial("1")
@@ -21,7 +24,9 @@ def main():
     if opcao_jogador == "1":
         tela_novo_jogo = TelaNovoJogo()
         nome_jogador = tela_novo_jogo.mostrar_tela_novo_jogo()
-        iniciarJogo()
+        pontuacao = iniciarJogo()
+        gravaNomeJogador(nome_jogador)
+        gravaPontuacao(pontuacao)
 
     elif opcao_jogador == "2":
         tela_high_scores = TelaHighScores()
@@ -82,8 +87,6 @@ def iniciarJogo():
                 fantasmas[i].moverBaixo(dimensoesMapa.plano)
             else:
                 fantasmas[i].moverEsquerda(dimensoesMapa.plano)
-
-        
         
 if __name__ == "__main__":
     main()
