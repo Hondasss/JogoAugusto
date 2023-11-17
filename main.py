@@ -5,6 +5,7 @@ import msvcrt
 import WConio2 as WConio2
 import random
 import time
+import sys
 
 #Importação de classes
 from telaInicial import TelaInicial, TelaNovoJogo, TelaHighScores 
@@ -14,9 +15,6 @@ from paredesMapa import Paredes
 from fantasmas import Fantasmas
 from arquivos import *
 
-#Adiciona a função de salvar no arquivo
-from arquivos import ordenar_pontuacoes, gravaNomeJogador, gravaPontuacao
-
 def main():
     tela_inicial = TelaInicial()
     opcao_jogador = tela_inicial.mostrar_tela_inicial("1")
@@ -24,9 +22,7 @@ def main():
     if opcao_jogador == "1":
         tela_novo_jogo = TelaNovoJogo()
         nome_jogador = tela_novo_jogo.mostrar_tela_novo_jogo()
-        pontuacao = iniciarJogo()
-        gravaNomeJogador(nome_jogador)
-        gravaPontuacao(pontuacao)
+        iniciarJogo()
 
     elif opcao_jogador == "2":
         tela_high_scores = TelaHighScores()
@@ -73,8 +69,7 @@ def iniciarJogo():
             elif tecla == 's' or tecla == 'S':
                 pacman.moverBaixo(dimensoesMapa.plano)
         
-        
-
+    
         #gerado um numero aleatorio entre 1 e 4
         #1 cima, 2 direita, 3 baixo, 4 esquerdo
         for i in range(len(fantasmas)):
@@ -87,6 +82,31 @@ def iniciarJogo():
                 fantasmas[i].moverBaixo(dimensoesMapa.plano)
             else:
                 fantasmas[i].moverEsquerda(dimensoesMapa.plano)
+
+        # Verifica colisão com fantasmas
+        for i, fantasma in enumerate(fantasmas):
+            if pacman.linha == fantasma.linha and pacman.coluna == fantasma.coluna:
+                game_over(pacman.linha, pacman.coluna, i)
+                return
+
+        def game_over(pacman_linha, pacman_coluna, fantasma_index):
+            os.system('cls')  # Limpa a tela
+            print("Game Over!")
+            print(f"Pacman colidiu com o fantasma na posição: ({pacman_linha}, {pacman_coluna})")
+            print(f"Fantasma {fantasma_index + 1} na posição: ({fantasmas[fantasma_index].linha}, {fantasmas[fantasma_index].coluna})")
+            
+            # Adicione aqui qualquer lógica adicional que você queira para a tela de Game Over.
+            # Por exemplo, pode ser interessante exibir a pontuação final ou retornar ao menu principal.
+            
+            # Aguarda 8 segundos antes de encerrar o programa
+            time.sleep(8)  
+            
+            # Limpa a tela novamente
+            os.system('cls')  
+            
+            # Adicione aqui qualquer lógica adicional que você deseja após o Game Over.
+            # Por exemplo, você pode querer retornar ao menu principal ou encerrar o programa completamente.
+            sys.exit()   
         
 if __name__ == "__main__":
     main()
