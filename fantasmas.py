@@ -1,6 +1,12 @@
 class Fantasmas:
-    def __init__(self, teste):
-        self.teste = teste
+    def __init__(self, fantasma , linhaInicial, colunaInicial):
+        self.fantasma = fantasma
+        self.linha = linhaInicial
+        self.coluna = colunaInicial
 
-    def imprimirTeste (self):
-        return f"Olá, {self.teste}!"
+
+    
+
+    
+
+

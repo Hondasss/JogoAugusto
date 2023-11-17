@@ -60,13 +60,3 @@ class Paredes:
         paredes.addLinhaHorizontal(linha=20, colunaInicial=2, largura=8)
         paredes.addLinhaHorizontal(linha=20, colunaInicial=13, largura=8)
 
-
-
-
-
-
-
-
-
-
-
