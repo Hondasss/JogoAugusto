@@ -3,17 +3,26 @@ import os
 import cursor
 import msvcrt
 import WConio2 as WConio2
+import random
+import time
 
 #Importação de classes
 from mapa import Mapa
 from pacman import Pacman
 from paredesMapa import Paredes
+from fantasmas import Fantasmas
 
 def main():
     os.system('cls')
     #Declarando instâncias das classes
     dimensoesMapa = Mapa(largura=23, altura=23) #Definindo um mapa 23x23
     pacman = Pacman("C", 4, 11) #Definindo o simbolo do pacman e sua posição inicial
+    fantasmas = [
+        Fantasmas("R", 1, 1),
+        Fantasmas("G", 1, 21),
+        Fantasmas("B", 21, 1),
+        Fantasmas("Y", 21, 21)
+    ]
     simbolo = ''
     paredes = Paredes(dimensoesMapa.plano)
 
@@ -24,23 +33,44 @@ def main():
         WConio2.gotoxy(0,0)
         cursor.hide() #Esconde o cursor
         dimensoesMapa.atualizaCaractere(pacman.pacman, pacman.linha, pacman.coluna) #Atualiza o caractere do pacman
+        dimensoesMapa.atualizaFantasma(fantasmas)
         dimensoesMapa.imprimir() #Imprime o mapa
-
+        
+        time.sleep(0.1)
+        
         #Captação e movimentação usando a biblioteca msvcrt
         if msvcrt.kbhit():
             tecla = msvcrt.getch().decode()
             if tecla == 'a' or tecla == 'A':
-                pacman.moverEsquerda()
+                pacman.moverEsquerda(dimensoesMapa.plano)
             elif tecla == 'd' or tecla == 'D':
-                pacman.moverDireita()
+                pacman.moverDireita(dimensoesMapa.plano)
             elif tecla == 'w' or tecla == 'W':
-                pacman.moverCima()
+                pacman.moverCima(dimensoesMapa.plano)
             elif tecla == 's' or tecla == 'S':
-                pacman.moverBaixo()
+                pacman.moverBaixo(dimensoesMapa.plano)
+        
+        
+
+        #gerado um numero aleatorio entre 1 e 4
+        #1 cima, 2 direita, 3 baixo, 4 esquerdo
+        for i in range(len(fantasmas)):
+            dir = random.randint(1,4)
+            if dir == 1:
+                fantasmas[i].moverCima(dimensoesMapa.plano)
+            elif dir == 2:
+                fantasmas[i].moverDireita(dimensoesMapa.plano)
+            elif dir == 3:
+                fantasmas[i].moverBaixo(dimensoesMapa.plano)
+            else:
+                fantasmas[i].moverEsquerda(dimensoesMapa.plano)
+
+        
         
 if __name__ == "__main__":
     main()
 
+    
 class Mapa:
     #Definição da função INIT, que armazenará variáveis de controle da largura e altura
     def __init__(self, largura, altura):
@@ -53,6 +83,17 @@ class Mapa:
         self.bordas() #O método é chamado aqui para criar as bordas desde o inicio do jogo, garantindo solidez e evitando erros
         self.linhaPacmanAnterior = 0  
         self.colunaPacmanAnterior = 0  
+        self.FantasmaAnterior = {
+            "LinhaFantasma1": 0,
+            "ColunaFantasma1": 0,
+            "LinhaFantasma2": 0,
+            "ColunaFantasma2": 0,
+            "LinhaFantasma3": 0,
+            "ColunaFantasma3": 0,
+            "LinhaFantasma4": 0,
+            "ColunaFantasma4": 0
+        }
+            
 
     def bordas(self):
         #Método que adiciona as bordas delimitadas por #
@@ -73,6 +114,15 @@ class Mapa:
             self.linhaPacmanAnterior, self.colunaPacmanAnterior = linha, coluna
             self.plano[linha][coluna] = caractere
 
+    def atualizaFantasma(self, fantasmas):
+        for i in range(len(fantasmas)):
+            self.limparPosicao(self.FantasmaAnterior[f"LinhaFantasma{i+1}"],
+                               self.FantasmaAnterior[f"ColunaFantasma{i+1}"])
+            f = fantasmas[i]
+            self.plano[f.linha][f.coluna] = f.fantasma;
+            self.FantasmaAnterior[f"LinhaFantasma{i+1}"] = f.linha
+            self.FantasmaAnterior[f"ColunaFantasma{i+1}"] = f.coluna
+            
     def limparPosicao(self, linha,  coluna):
         # Limpa a posição anterior do Pacman para dar impressao de movimento
         self.plano[linha][coluna] = ' '
@@ -112,6 +162,8 @@ class Paredes:
         paredes.addLinhaVertical(coluna=18, linhaInicial=17, altura=2)
         paredes.addLinhaVertical(coluna=6, linhaInicial=18, altura=2)
         paredes.addLinhaVertical(coluna=16, linhaInicial=18, altura=2)
+        paredes.addLinhaVertical(coluna=20, linhaInicial=7, altura=6)
+        paredes.addLinhaVertical(coluna=2, linhaInicial=7, altura=6)
 
     #Linhas horizontais do mapa
         paredes.addLinhaHorizontal(linha=2, colunaInicial=2, largura=3)
@@ -125,11 +177,9 @@ class Paredes:
         paredes.addLinhaHorizontal(linha=5, colunaInicial=2, largura=3)
         paredes.addLinhaHorizontal(linha=5, colunaInicial=18, largura=3)
         paredes.addLinhaHorizontal(linha=5, colunaInicial=8, largura=7)
-        paredes.addLinhaHorizontal(linha=7, colunaInicial=1, largura=4)
         paredes.addLinhaHorizontal(linha=14, colunaInicial=1, largura=4)
         paredes.addLinhaHorizontal(linha=7, colunaInicial=6, largura=4)
         paredes.addLinhaHorizontal(linha=7, colunaInicial=13, largura=4)
-        paredes.addLinhaHorizontal(linha=7, colunaInicial=19, largura=4)
         paredes.addLinhaHorizontal(linha=14, colunaInicial=19, largura=4)
         paredes.addLinhaHorizontal(linha=9, colunaInicial=8, largura=7)
         paredes.addLinhaHorizontal(linha=12, colunaInicial=8, largura=7)
@@ -151,26 +201,40 @@ class Pacman:
         self.linha = linhaInicial
         self.coluna = colunaInicial
 
-    def moverEsquerda(self):
-        self.coluna -= 1
+    def moverEsquerda(self, mapa):
+        if mapa[self.linha][self.coluna - 1] != '#':
+            self.coluna -= 1
 
-    def moverDireita(self):
-        self.coluna += 1
+    def moverDireita(self, mapa):
+        if mapa[self.linha][self.coluna + 1] != '#':
+            self.coluna += 1
 
-    def moverCima(self):
-        self.linha -= 1
+    def moverCima(self, mapa):
+        if mapa[self.linha - 1][self.coluna] != '#':
+            self.linha -= 1
 
-    def moverBaixo(self):
-        self.linha += 1
+    def moverBaixo(self, mapa):
+        if mapa[self.linha + 1][self.coluna] != '#':
+            self.linha += 1
 
+class Fantasmas:
+    def __init__(self, fantasma, linhaInicial, colunaInicial):
+        self.fantasma = fantasma
+        self.linha = linhaInicial
+        self.coluna = colunaInicial
+        
+    def moverEsquerda(self, mapa):
+        if mapa[self.linha][self.coluna - 1] != '#':
+            self.coluna -= 1
 
+    def moverDireita(self, mapa):
+        if mapa[self.linha][self.coluna + 1] != '#':
+            self.coluna += 1
 
+    def moverCima(self, mapa):
+        if mapa[self.linha - 1][self.coluna] != '#':
+            self.linha -= 1
 
-
-
-
-
-
-
-
-
+    def moverBaixo(self, mapa):
+        if mapa[self.linha + 1][self.coluna] != '#':
+            self.linha += 1

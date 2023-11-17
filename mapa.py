@@ -9,16 +9,18 @@ class Mapa:
         self.plano = [['.' for coluna in range(largura)] for linha in range(altura)] #O ponto representa o valor inicial de cada célula na matriz
         self.bordas() #O método é chamado aqui para criar as bordas desde o inicio do jogo, garantindo solidez e evitando erros
         self.linhaPacmanAnterior = 0  
-        self.colunaPacmanAnterior = 0
-
-        self.linhaFantasma1Anterior = 0
-        self.colunaFantasma1Anterior = 0
-        self.linhaFantasma2Anterior = 0
-        self.colunaFantasma2Anterior = 0
-        self.linhaFantasma3Anterior = 0
-        self.colunaFantasma3Anterior = 0
-        self.linhaFantasma4Anterior = 0
-        self.colunaFantasma4Anterior = 0
+        self.colunaPacmanAnterior = 0  
+        self.FantasmaAnterior = {
+            "LinhaFantasma1": 0,
+            "ColunaFantasma1": 0,
+            "LinhaFantasma2": 0,
+            "ColunaFantasma2": 0,
+            "LinhaFantasma3": 0,
+            "ColunaFantasma3": 0,
+            "LinhaFantasma4": 0,
+            "ColunaFantasma4": 0
+        }
+            
 
     def bordas(self):
         #Método que adiciona as bordas delimitadas por #
@@ -39,40 +41,22 @@ class Mapa:
             self.linhaPacmanAnterior, self.colunaPacmanAnterior = linha, coluna
             self.plano[linha][coluna] = caractere
 
-    def atualizaFantasma1(self, caractere, linha, coluna):
-        # Limpa a posição anterior do Fantasma
-        self.limparPosicao(self.linhaFantasma1Anterior, self.colunaFantasma1Anterior)
+    def atualizaFantasma(self, fantasmas):
+        for i in range(len(fantasmas)):
+            f = fantasmas[i]
+            # Verifica se a próxima posição está vazia ou é o símbolo do Pac-Man antes de mover o fantasma
+            if self.plano[f.linha][f.coluna] == ' ' or self.plano[f.linha][f.coluna] == 'C':
+                self.plano[self.FantasmaAnterior[f"LinhaFantasma{i+1}"]][self.FantasmaAnterior[f"ColunaFantasma{i+1}"]] = ' '  # Limpa a posição anterior do fantasma
+            else:
+                self.plano[self.FantasmaAnterior[f"LinhaFantasma{i+1}"]][self.FantasmaAnterior[f"ColunaFantasma{i+1}"]] = '.'  # Volta o caractere original
+            self.plano[f.linha][f.coluna] = f.fantasma
+            self.FantasmaAnterior[f"LinhaFantasma{i+1}"] = f.linha
+            self.FantasmaAnterior[f"ColunaFantasma{i+1}"] = f.coluna
 
-        if 0 <= linha < self.altura and 0 <= coluna < self.largura:
-            self.linhaFantasma1Anterior, self.colunaFantasma1Anterior = linha, coluna
-            self.plano[linha][coluna] = caractere 
 
-    def atualizaFantasma2(self, caractere, linha, coluna):
-        # Limpa a posição anterior do Fantasma
-        self.limparPosicao(self.linhaFantasma2Anterior, self.colunaFantasma2Anterior)
-
-        if 0 <= linha < self.altura and 0 <= coluna < self.largura:
-            self.linhaFantasma2Anterior, self.colunaFantasma2Anterior = linha, coluna
-            self.plano[linha][coluna] = caractere
-
-    def atualizaFantasma3(self, caractere, linha, coluna):
-        # Limpa a posição anterior do Fantasma
-        self.limparPosicao(self.linhaFantasma3Anterior, self.colunaFantasma3Anterior)
-
-        if 0 <= linha < self.altura and 0 <= coluna < self.largura:
-            self.linhaFantasma3Anterior, self.colunaFantasma3Anterior = linha, coluna
-            self.plano[linha][coluna] = caractere
-
-    def atualizaFantasma4(self, caractere, linha, coluna):
-        # Limpa a posição anterior do Fantasma
-        self.limparPosicao(self.linhaFantasma4Anterior, self.colunaFantasma4Anterior)
-
-        if 0 <= linha < self.altura and 0 <= coluna < self.largura:
-            self.linhaFantasma4Anterior, self.colunaFantasma4Anterior = linha, coluna
-            self.plano[linha][coluna] = caractere
-
+            
     def limparPosicao(self, linha,  coluna):
-        # Limpa a posição anterior do Pacman e do Fantasma para dar impressao de movimento
+        # Limpa a posição anterior do Pacman para dar impressao de movimento
         self.plano[linha][coluna] = ' '
 
     def imprimir(self): #Impressão

@@ -27,6 +27,8 @@ class Paredes:
         paredes.addLinhaVertical(coluna=18, linhaInicial=17, altura=2)
         paredes.addLinhaVertical(coluna=6, linhaInicial=18, altura=2)
         paredes.addLinhaVertical(coluna=16, linhaInicial=18, altura=2)
+        paredes.addLinhaVertical(coluna=20, linhaInicial=7, altura=6)
+        paredes.addLinhaVertical(coluna=2, linhaInicial=7, altura=6)
 
     #Linhas horizontais do mapa
         paredes.addLinhaHorizontal(linha=2, colunaInicial=2, largura=3)
@@ -40,11 +42,9 @@ class Paredes:
         paredes.addLinhaHorizontal(linha=5, colunaInicial=2, largura=3)
         paredes.addLinhaHorizontal(linha=5, colunaInicial=18, largura=3)
         paredes.addLinhaHorizontal(linha=5, colunaInicial=8, largura=7)
-        paredes.addLinhaHorizontal(linha=7, colunaInicial=1, largura=4)
         paredes.addLinhaHorizontal(linha=14, colunaInicial=1, largura=4)
         paredes.addLinhaHorizontal(linha=7, colunaInicial=6, largura=4)
         paredes.addLinhaHorizontal(linha=7, colunaInicial=13, largura=4)
-        paredes.addLinhaHorizontal(linha=7, colunaInicial=19, largura=4)
         paredes.addLinhaHorizontal(linha=14, colunaInicial=19, largura=4)
         paredes.addLinhaHorizontal(linha=9, colunaInicial=8, largura=7)
         paredes.addLinhaHorizontal(linha=12, colunaInicial=8, largura=7)
@@ -59,4 +59,14 @@ class Paredes:
         paredes.addLinhaHorizontal(linha=18, colunaInicial=8, largura=7)
         paredes.addLinhaHorizontal(linha=20, colunaInicial=2, largura=8)
         paredes.addLinhaHorizontal(linha=20, colunaInicial=13, largura=8)
+
+
+
+
+
+
+
+
+
+
 
