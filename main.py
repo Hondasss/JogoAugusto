@@ -7,6 +7,7 @@ import random
 import time
 
 #Importação de classes
+from telaInicial import TelaInicial, TelaNovoJogo, TelaHighScores 
 from mapa import Mapa
 from pacman import Pacman
 from paredesMapa import Paredes
@@ -14,6 +15,22 @@ from fantasmas import Fantasmas
 from arquivos import *
 
 def main():
+    tela_inicial = TelaInicial()
+    opcao_jogador = tela_inicial.mostrar_tela_inicial("1")
+
+    if opcao_jogador == "1":
+        tela_novo_jogo = TelaNovoJogo()
+        nome_jogador = tela_novo_jogo.mostrar_tela_novo_jogo()
+        iniciarJogo()
+
+    elif opcao_jogador == "2":
+        tela_high_scores = TelaHighScores()
+        tela_high_scores.mostrar_tela_high_scores()
+
+    os.system('cls')  # Limpa a tela antes de sair do jogo
+    print("Fim do Jogo!")
+
+def iniciarJogo():
     os.system('cls')
     #Declarando instâncias das classes
     dimensoesMapa = Mapa(largura=23, altura=23) #Definindo um mapa 23x23
