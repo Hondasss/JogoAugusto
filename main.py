@@ -16,14 +16,15 @@ from fantasmas import Fantasmas
 from arquivos import *
 from pontuacao import Pontuacao
 
+
 def main():
     tela_inicial = TelaInicial()
     opcao_jogador = tela_inicial.mostrar_tela_inicial("1")
 
     if opcao_jogador == "1":
         tela_novo_jogo = TelaNovoJogo()
-        nome_jogador = tela_novo_jogo.mostrar_tela_novo_jogo()
-        iniciarJogo()
+        nomeJogador = tela_novo_jogo.mostrar_tela_novo_jogo()
+        iniciarJogo(nomeJogador)
 
     elif opcao_jogador == "2":
         tela_high_scores = TelaHighScores()
@@ -32,7 +33,29 @@ def main():
     os.system('cls')  # Limpa a tela antes de sair do jogo
     print("Fim do Jogo!")
 
-def iniciarJogo():
+# Função para salvar a pontuação
+def salvar_pontuacao(nome_jogador, pontuacao):
+    with open('ranking.txt', 'a') as arquivo:
+        arquivo.write(f"{nome_jogador}: {pontuacao}\n")
+
+# Função para mostrar os high scores
+def mostrar_high_scores():
+    try:
+        with open('ranking.txt', 'r') as arquivo:
+            pontuacoes = []
+            for linha in arquivo:
+                nome, pontuacao = linha.strip().split(': ')
+                pontuacoes.append((nome, int(pontuacao)))
+            
+            pontuacoes_ordenadas = sorted(pontuacoes, key=lambda x: x[1], reverse=True)
+            
+            print("Pontuações mais altas:")
+            for idx, (nome, pontuacao) in enumerate(pontuacoes_ordenadas, start=1):
+                print(f"{idx}. {nome}: {pontuacao}")
+    except FileNotFoundError:
+        print("Ainda não há pontuações salvas.")
+
+def iniciarJogo(nomeJogador):
     os.system('cls')
     #Declarando instâncias das classes
     dimensoesMapa = Mapa(largura=23, altura=23) #Definindo um mapa 23x23
@@ -93,24 +116,27 @@ def iniciarJogo():
         #Verifica colisão com fantasmas
         for i, fantasma in enumerate(fantasmas):
             if pacman.linha == fantasma.linha and pacman.coluna == fantasma.coluna:
-                game_over()
+                game_over(nomeJogador, pontuacaoTotal)
                 return
 
-def game_over():
-    os.system('cls')  # Limpa a tela
+def game_over(nomeJogador, pontuacaoTotal):
     tela_game_over = TelaGameOver()
     opcao_game_over = tela_game_over.mostrar_tela_game_over()
+    
+    if opcao_game_over == "1":
+        salvar_pontuacao(nomeJogador, pontuacaoTotal)  # Salvar pontuação ao final da partida
 
-    while True:  # Loop até que uma ação válida seja escolhida
-        if opcao_game_over == "1":
-            main()  # Reiniciar o jogo
-            break  # Sai do loop depois de reiniciar o jogo
-        elif opcao_game_over == "2":
-            os.system('cls')
-            sys.exit()  # Sair do jogo
-            break              
+        opcao_mostrar_high_scores = input("Deseja ver os high scores? (S/N): ")
+        if opcao_mostrar_high_scores.upper() == "S":
+            mostrar_high_scores()  # Mostrar high scores
+
+        main()  # Reiniciar o jogo
+        return  # Sai da função game_over após reiniciar o jogo
+
+    elif opcao_game_over == "2":
+        os.system('cls')
+        sys.exit()  # Sair do jogo
+        return 
         
 if __name__ == "__main__":
     main()
-
-    
