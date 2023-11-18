@@ -62,12 +62,46 @@ class Paredes:
         paredes.addLinhaHorizontal(linha=20, colunaInicial=13, largura=8)
 
 
+    def configurarMapa2(paredes):
+    #Linhas verticais do mapa
+        paredes.addLinhaVertical(coluna=11, linhaInicial=1, altura=3)
+        paredes.addLinhaVertical(coluna=6, linhaInicial=5, altura=10)
+        paredes.addLinhaVertical(coluna=16, linhaInicial=5, altura=10)
+        paredes.addLinhaVertical(coluna=11, linhaInicial=6, altura=2)
+        paredes.addLinhaVertical(coluna=4, linhaInicial=7, altura=6)
+        paredes.addLinhaVertical(coluna=18, linhaInicial=7, altura=6)
+        paredes.addLinhaVertical(coluna=8, linhaInicial=11, altura=1)
+        paredes.addLinhaVertical(coluna=14, linhaInicial=11, altura=1)
+        paredes.addLinhaVertical(coluna=11, linhaInicial=15, altura=2)
+        paredes.addLinhaVertical(coluna=4, linhaInicial=17, altura=2)
+        paredes.addLinhaVertical(coluna=18, linhaInicial=17, altura=2)
+        paredes.addLinhaVertical(coluna=6, linhaInicial=18, altura=2)
+        paredes.addLinhaVertical(coluna=16, linhaInicial=18, altura=2)
+        paredes.addLinhaVertical(coluna=20, linhaInicial=7, altura=6)
+        paredes.addLinhaVertical(coluna=2, linhaInicial=7, altura=6)
+        paredes.addLinhaVertical(coluna=8, linhaInicial=4, altura=4)
+        paredes.addLinhaVertical(coluna=14, linhaInicial=4, altura=4)
+        paredes.addLinhaVertical(coluna=2, linhaInicial=18, altura=3)
+        paredes.addLinhaVertical(coluna=20, linhaInicial=18, altura=3)
+        paredes.addLinhaVertical(coluna=11, linhaInicial=2, altura=1)
 
-
-
-
-
-
-
-
-
+    #Linhas horizontais do mapa
+        paredes.addLinhaHorizontal(linha=2, colunaInicial=2, largura=8)    
+        paredes.addLinhaHorizontal(linha=2, colunaInicial=13, largura=8) 
+        paredes.addLinhaHorizontal(linha=5, colunaInicial=2, largura=3) 
+        paredes.addLinhaHorizontal(linha=5, colunaInicial=18, largura=3) 
+        paredes.addLinhaHorizontal(linha=3, colunaInicial=2, largura=7)  
+        paredes.addLinhaHorizontal(linha=3, colunaInicial=14, largura=7) 
+        paredes.addLinhaHorizontal(linha=9, colunaInicial=8, largura=3)     
+        paredes.addLinhaHorizontal(linha=9, colunaInicial=12, largura=3) 
+        paredes.addLinhaHorizontal(linha=11, colunaInicial=12, largura=3) 
+        paredes.addLinhaHorizontal(linha=11, colunaInicial=8, largura=3) 
+        paredes.addLinhaHorizontal(linha=13, colunaInicial=8, largura=3) 
+        paredes.addLinhaHorizontal(linha=13, colunaInicial=12, largura=3) 
+        paredes.addLinhaHorizontal(linha=14, colunaInicial=2, largura=3) 
+        paredes.addLinhaHorizontal(linha=14, colunaInicial=18, largura=3)
+        paredes.addLinhaHorizontal(linha=16, colunaInicial=4, largura=6)
+        paredes.addLinhaHorizontal(linha=16, colunaInicial=13, largura=6)
+        paredes.addLinhaHorizontal(linha=19, colunaInicial=6, largura=11)
+        paredes.addLinhaHorizontal(linha=20, colunaInicial=3, largura=3)
+        paredes.addLinhaHorizontal(linha=20, colunaInicial=17, largura=3)

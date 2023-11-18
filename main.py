@@ -24,9 +24,14 @@ def main():
     if opcao_jogador == "1":
         tela_novo_jogo = TelaNovoJogo()
         nomeJogador = tela_novo_jogo.mostrar_tela_novo_jogo()
-        iniciarJogo(nomeJogador)
+        iniciarJogo(nomeJogador,"1")
 
-    elif opcao_jogador == "2":
+    if opcao_jogador == "2":
+        tela_novo_jogo = TelaNovoJogo()
+        nomeJogador = tela_novo_jogo.mostrar_tela_novo_jogo()
+        iniciarJogo(nomeJogador,"2")
+
+    elif opcao_jogador == "3":
         tela_high_scores = TelaHighScores()
         tela_high_scores.mostrar_tela_high_scores()
 
@@ -55,7 +60,7 @@ def mostrar_high_scores():
     except FileNotFoundError:
         print("Ainda não há pontuações salvas.")
 
-def iniciarJogo(nomeJogador):
+def iniciarJogo(nomeJogador, opcao_jogador):
     os.system('cls')
     #Declarando instâncias das classes
     dimensoesMapa = Mapa(largura=23, altura=23) #Definindo um mapa 23x23
@@ -70,7 +75,10 @@ def iniciarJogo(nomeJogador):
     paredes = Paredes(dimensoesMapa.plano)
     pontuacaoTotal = 0 
 
-    paredes.configurarMapa() #Aqui colocamos as paredes do mapa
+    if opcao_jogador == "1":
+        paredes.configurarMapa() #Aqui colocamos as paredes do mapa
+    elif opcao_jogador == "2":
+        paredes.configurarMapa2()
 
     while (simbolo != "o"):
         #Posiciona o cursor no começo do terminal
@@ -112,6 +120,7 @@ def iniciarJogo(nomeJogador):
         pontuacaoAtual = Pontuacao.atualizar_pontuacao(pacman, dimensoesMapa.plano)
         pontuacaoTotal += pontuacaoAtual
         print(f"\nPontuação: {pontuacaoTotal}", end='', flush=True)
+        
 
         #Verifica colisão com fantasmas
         for i, fantasma in enumerate(fantasmas):
@@ -125,11 +134,12 @@ def game_over(nomeJogador, pontuacaoTotal):
     
     if opcao_game_over == "1":
         salvar_pontuacao(nomeJogador, pontuacaoTotal)  # Salvar pontuação ao final da partida
-
+        WConio2.gotoxy(12, 2)
         opcao_mostrar_high_scores = input("Deseja ver os high scores? (S/N): ")
         while opcao_mostrar_high_scores.upper() == "S":
-            mostrar_high_scores()  # Mostrar high scores
-            time.sleep(5)
+            os.system('cls') 
+            tela_high_scores = TelaHighScores()
+            tela_high_scores.mostrar_tela_high_scores()
             break
         
         main()  # Reiniciar o jogo
