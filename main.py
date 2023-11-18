@@ -127,9 +127,11 @@ def game_over(nomeJogador, pontuacaoTotal):
         salvar_pontuacao(nomeJogador, pontuacaoTotal)  # Salvar pontuação ao final da partida
 
         opcao_mostrar_high_scores = input("Deseja ver os high scores? (S/N): ")
-        if opcao_mostrar_high_scores.upper() == "S":
+        while opcao_mostrar_high_scores.upper() == "S":
             mostrar_high_scores()  # Mostrar high scores
-
+            time.sleep(5)
+            break
+        
         main()  # Reiniciar o jogo
         return  # Sai da função game_over após reiniciar o jogo
 
