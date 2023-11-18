@@ -105,3 +105,41 @@ class TelaHighScores(TelaBase):
         print("__" * 30)
 
         self.aguardar_tecla()
+
+class TelaGameOver(TelaBase):
+    def mostrar_tela_game_over(self):
+        self.limpar_tela()
+
+        #Impressão da tela de Game Over
+        print("__" * 30)
+        print("__" * 30)
+        print("__" + 22 * " " + "GAME OVER" + 24 * " " + "__")
+        print("__" * 30)
+        print("__    1 - Tentar Novamente" + 32 * " " + "__")
+        print("__    2 - Sair do Jogo" + 38 * " " + "__")
+        print("__" + 56 * " " + "__")
+        print("__    Digite sua opção:" + 35 * " " + "__")
+        print("__" * 30)
+        print("__" * 30)
+
+        WConio2.gotoxy(24, 7)
+        opcao_jogador = input()
+
+        #Validar a entrad
+        while opcao_jogador not in ["1", "2"]:
+            self.limpar_tela()
+            print("__" * 30)
+            print("__" * 30)
+            print("__" + 22 * " " + "GAME OVER" + 24 * " " + "__")
+            print("__" * 30)
+            print("__    1 - Tentar Novamente" + 32 * " " + "__")
+            print("__    2 - Sair do Jogo" + 38 * " " + "__")
+            print("__" + 56 * " " + "__")
+            print("__    Digite sua opção:" + 35 * " " + "__")
+            print("__" * 30)
+            print("__" * 30)
+            
+            WConio2.gotoxy(24, 7)
+            opcao_jogador = input()
+
+        return opcao_jogador

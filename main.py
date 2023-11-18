@@ -8,12 +8,13 @@ import time
 import sys
 
 #Importação de classes
-from telaInicial import TelaInicial, TelaNovoJogo, TelaHighScores 
+from telaInicial import TelaInicial, TelaNovoJogo, TelaHighScores, TelaGameOver
 from mapa import Mapa
 from pacman import Pacman
 from paredesMapa import Paredes
 from fantasmas import Fantasmas
 from arquivos import *
+from pontuacao import Pontuacao
 
 def main():
     tela_inicial = TelaInicial()
@@ -44,6 +45,7 @@ def iniciarJogo():
     ]
     simbolo = ''
     paredes = Paredes(dimensoesMapa.plano)
+    pontuacaoTotal = 0 
 
     paredes.configurarMapa() #Aqui colocamos as paredes do mapa
 
@@ -83,30 +85,30 @@ def iniciarJogo():
             else:
                 fantasmas[i].moverEsquerda(dimensoesMapa.plano)
 
-        # Verifica colisão com fantasmas
+        # Dentro do loop principal do jogo onde o Pac-Man se move:
+        pontuacaoAtual = Pontuacao.atualizar_pontuacao(pacman, dimensoesMapa.plano)
+        pontuacaoTotal += pontuacaoAtual
+        print(f"\nPontuação: {pontuacaoTotal}", end='', flush=True)
+
+        #Verifica colisão com fantasmas
         for i, fantasma in enumerate(fantasmas):
             if pacman.linha == fantasma.linha and pacman.coluna == fantasma.coluna:
-                game_over(pacman.linha, pacman.coluna, i)
+                game_over()
                 return
 
-        def game_over(pacman_linha, pacman_coluna, fantasma_index):
-            os.system('cls')  # Limpa a tela
-            print("Game Over!")
-            print(f"Pacman colidiu com o fantasma na posição: ({pacman_linha}, {pacman_coluna})")
-            print(f"Fantasma {fantasma_index + 1} na posição: ({fantasmas[fantasma_index].linha}, {fantasmas[fantasma_index].coluna})")
-            
-            # Adicione aqui qualquer lógica adicional que você queira para a tela de Game Over.
-            # Por exemplo, pode ser interessante exibir a pontuação final ou retornar ao menu principal.
-            
-            # Aguarda 8 segundos antes de encerrar o programa
-            time.sleep(8)  
-            
-            # Limpa a tela novamente
-            os.system('cls')  
-            
-            # Adicione aqui qualquer lógica adicional que você deseja após o Game Over.
-            # Por exemplo, você pode querer retornar ao menu principal ou encerrar o programa completamente.
-            sys.exit()   
+def game_over():
+    os.system('cls')  # Limpa a tela
+    tela_game_over = TelaGameOver()
+    opcao_game_over = tela_game_over.mostrar_tela_game_over()
+
+    while True:  # Loop até que uma ação válida seja escolhida
+        if opcao_game_over == "1":
+            main()  # Reiniciar o jogo
+            break  # Sai do loop depois de reiniciar o jogo
+        elif opcao_game_over == "2":
+            os.system('cls')
+            sys.exit()  # Sair do jogo
+            break              
         
 if __name__ == "__main__":
     main()
