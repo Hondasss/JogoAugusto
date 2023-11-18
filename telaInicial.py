@@ -76,35 +76,53 @@ class TelaNovoJogo(TelaBase):
         return nome_jogador
 
 # Tela para exibir as pontuações mais altas
+def ordenar_pontuacoes():
+    try:
+        with open('ranking.txt', 'r') as arquivo:
+            linhas = arquivo.readlines()
+
+        pontuacoes = []
+
+        for linha in linhas:
+            elementos = linha.strip().split()
+            if len(elementos) == 2:
+                nome, pontuacao = elementos
+                pontuacoes.append((nome, int(pontuacao)))
+            else:
+                print(f"Erro na linha: {linha.strip()}")
+
+        pontuacoes_ordenadas = sorted(pontuacoes, key=lambda item: item[1], reverse=True)
+
+        return pontuacoes_ordenadas
+
+    except FileNotFoundError:
+        return []  
+
+    except Exception as e:
+        return f"Erro ao ordenar pontuações: {str(e)}"
+
+
 class TelaHighScores(TelaBase):
     def mostrar_tela_high_scores(self):
         self.limpar_tela()
 
-        # Obter pontuações ordenadas
         pontuacoes_ordenadas = ordenar_pontuacoes()
 
-        # Mostrar Maiores pontuações
-        print("__" * 30)
-        print("__" * 30)
-        print("__    MAIORES PONTUAÇÕES: " + 32 * " " + "__")
+        print("╔════════════════════════════════════════════════╗")
+        print("║               MAIORES PONTUAÇÕES               ║")
+        print("╠════════════════════════════════════════════════╣")
 
-        # Se não existir o arquivo
         if not pontuacoes_ordenadas:
-            print("__" + 56 * " " + "__")
+            print("║                  Sem pontuações                ║")
         else:
-            # Iterar sobre as pontuações e imprimir formatado
-            for i, (nome, pontuacao) in enumerate(pontuacoes_ordenadas, start=1):  # A função enumerate iterar sobre uma sequência
-                # Calcular o número de espaços necessários para alinhar a pontuação
-                espacos_pontuacao = 30 - len(nome) - len(str(pontuacao))
+            for i, (nome, pontuacao) in enumerate(pontuacoes_ordenadas, start=1):
+                # Ajuste a formatação para garantir que os campos estejam alinhados corretamente
+                print(f"║  {i}. {nome.ljust(20)}: {str(pontuacao).rjust(5)}{' ' * 16}║")
 
-                # Imprimir a linha formatada com base no tamanho do nome e pontuação
-                print(f"__    {i}. {nome}: {pontuacao}" + espacos_pontuacao * " " + 17 * " "  + "__")
-
-        print("__" + 56 * " " + "__")
-        print("__" * 30)
-        print("__" * 30)
+        print("╚════════════════════════════════════════════════╝")
 
         self.aguardar_tecla()
+
 
 class TelaGameOver(TelaBase):
     def mostrar_tela_game_over(self):

@@ -137,6 +137,7 @@ def game_over(nomeJogador, pontuacaoTotal):
 
     elif opcao_game_over == "2":
         os.system('cls')
+        print("Fim do Jogo!")
         sys.exit()  # Sair do jogo
         return 
         
