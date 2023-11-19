@@ -1,3 +1,5 @@
+import random
+
 class Mapa:
     #Definição da função INIT, que armazenará variáveis de controle da largura e altura
     def __init__(self, largura, altura):
@@ -20,6 +22,7 @@ class Mapa:
             "LinhaFantasma4": 0,
             "ColunaFantasma4": 0
         }
+        self.frutas = []
             
 
     def bordas(self):
@@ -52,12 +55,25 @@ class Mapa:
             self.plano[f.linha][f.coluna] = f.fantasma
             self.FantasmaAnterior[f"LinhaFantasma{i+1}"] = f.linha
             self.FantasmaAnterior[f"ColunaFantasma{i+1}"] = f.coluna
-
-
             
     def limparPosicao(self, linha,  coluna):
         # Limpa a posição anterior do Pacman para dar impressao de movimento
         self.plano[linha][coluna] = ' '
+
+    def colocar_frutas(self, quantidade):
+        for i in range(quantidade):
+            linha = random.randint(1, self.altura - 2)
+            coluna = random.randint(1, self.largura - 2)
+            if self.plano[linha][coluna] == ' ':
+                self.plano[linha][coluna] = 'O'  # Verifique se a fruta é representada por 'O'
+                self.frutas.append((linha, coluna)) 
+
+    def coletar_fruta(self, linha, coluna):
+        # Verifica se o Pac-Man está na posição de uma fruta
+        if (linha, coluna) in self.frutas:
+            self.frutas.remove((linha, coluna))  # Remove a fruta da lista
+            return True  # Retorna True se uma fruta foi coletada
+        return False  # Retorna False se não houve coleta de fruta
 
     def imprimir(self): #Impressão
         for linha in self.plano:

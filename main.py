@@ -16,7 +16,6 @@ from fantasmas import Fantasmas
 from arquivos import *
 from pontuacao import Pontuacao
 
-
 def main():
     tela_inicial = TelaInicial()
     opcao_jogador = tela_inicial.mostrar_tela_inicial("1")
@@ -25,7 +24,6 @@ def main():
         tela_novo_jogo = TelaNovoJogo()
         nomeJogador = tela_novo_jogo.mostrar_tela_novo_jogo()
         iniciarJogo(nomeJogador,"1")
-
     if opcao_jogador == "2":
         tela_novo_jogo = TelaNovoJogo()
         nomeJogador = tela_novo_jogo.mostrar_tela_novo_jogo()
@@ -79,6 +77,8 @@ def iniciarJogo(nomeJogador, opcao_jogador):
         paredes.configurarMapa() #Aqui colocamos as paredes do mapa
     elif opcao_jogador == "2":
         paredes.configurarMapa2()
+    
+    dimensoesMapa.colocar_frutas(27)
 
     while (simbolo != "o"):
         #Posiciona o cursor no começo do terminal
@@ -86,6 +86,7 @@ def iniciarJogo(nomeJogador, opcao_jogador):
         cursor.hide() #Esconde o cursor
         dimensoesMapa.atualizaCaractere(pacman.pacman, pacman.linha, pacman.coluna) #Atualiza o caractere do pacman
         dimensoesMapa.atualizaFantasma(fantasmas)
+
         dimensoesMapa.imprimir() #Imprime o mapa
         
         time.sleep(0.1)
@@ -116,7 +117,11 @@ def iniciarJogo(nomeJogador, opcao_jogador):
             else:
                 fantasmas[i].moverEsquerda(dimensoesMapa.plano)
 
-        # Dentro do loop principal do jogo onde o Pac-Man se move:
+        pontuacaoAtual = Pontuacao.atualizar_pontuacao(pacman, dimensoesMapa.plano)
+        if dimensoesMapa.coletar_fruta(pacman.linha, pacman.coluna):
+            pontuacaoAtual += 10  # Incrementa a pontuação se uma fruta foi coletada
+
+        #Atualizando a pontuação:
         pontuacaoAtual = Pontuacao.atualizar_pontuacao(pacman, dimensoesMapa.plano)
         pontuacaoTotal += pontuacaoAtual
         print(f"\nPontuação: {pontuacaoTotal}", end='', flush=True)

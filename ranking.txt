@@ -8,3 +8,7 @@ dsadmasç: 16
 dsadsa: 260
 dd: 26
 dsadsa: 30
+d: 44
+dasd: 9
+d: 15
+d: 0

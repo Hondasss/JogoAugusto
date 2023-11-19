@@ -16,7 +16,6 @@ from fantasmas import Fantasmas
 from arquivos import *
 from pontuacao import Pontuacao
 
-
 def main():
     tela_inicial = TelaInicial()
     opcao_jogador = tela_inicial.mostrar_tela_inicial("1")
@@ -24,9 +23,13 @@ def main():
     if opcao_jogador == "1":
         tela_novo_jogo = TelaNovoJogo()
         nomeJogador = tela_novo_jogo.mostrar_tela_novo_jogo()
-        iniciarJogo(nomeJogador)
+        iniciarJogo(nomeJogador,"1")
+    if opcao_jogador == "2":
+        tela_novo_jogo = TelaNovoJogo()
+        nomeJogador = tela_novo_jogo.mostrar_tela_novo_jogo()
+        iniciarJogo(nomeJogador,"2")
 
-    elif opcao_jogador == "2":
+    elif opcao_jogador == "3":
         tela_high_scores = TelaHighScores()
         tela_high_scores.mostrar_tela_high_scores()
 
@@ -42,12 +45,20 @@ def salvar_pontuacao(nome_jogador, pontuacao):
 def mostrar_high_scores():
     try:
         with open('ranking.txt', 'r') as arquivo:
+            pontuacoes = []
+            for linha in arquivo:
+                nome, pontuacao = linha.strip().split(': ')
+                pontuacoes.append((nome, int(pontuacao)))
+            
+            pontuacoes_ordenadas = sorted(pontuacoes, key=lambda x: x[1], reverse=True)
+            
             print("Pontuações mais altas:")
-            print(arquivo.read())
+            for idx, (nome, pontuacao) in enumerate(pontuacoes_ordenadas, start=1):
+                print(f"{idx}. {nome}: {pontuacao}")
     except FileNotFoundError:
         print("Ainda não há pontuações salvas.")
 
-def iniciarJogo(nomeJogador):
+def iniciarJogo(nomeJogador, opcao_jogador):
     os.system('cls')
     #Declarando instâncias das classes
     dimensoesMapa = Mapa(largura=23, altura=23) #Definindo um mapa 23x23
@@ -62,7 +73,12 @@ def iniciarJogo(nomeJogador):
     paredes = Paredes(dimensoesMapa.plano)
     pontuacaoTotal = 0 
 
-    paredes.configurarMapa() #Aqui colocamos as paredes do mapa
+    if opcao_jogador == "1":
+        paredes.configurarMapa() #Aqui colocamos as paredes do mapa
+    elif opcao_jogador == "2":
+        paredes.configurarMapa2()
+    
+    dimensoesMapa.colocar_frutas(3)
 
     while (simbolo != "o"):
         #Posiciona o cursor no começo do terminal
@@ -70,6 +86,7 @@ def iniciarJogo(nomeJogador):
         cursor.hide() #Esconde o cursor
         dimensoesMapa.atualizaCaractere(pacman.pacman, pacman.linha, pacman.coluna) #Atualiza o caractere do pacman
         dimensoesMapa.atualizaFantasma(fantasmas)
+
         dimensoesMapa.imprimir() #Imprime o mapa
         
         time.sleep(0.1)
@@ -100,10 +117,15 @@ def iniciarJogo(nomeJogador):
             else:
                 fantasmas[i].moverEsquerda(dimensoesMapa.plano)
 
-        # Dentro do loop principal do jogo onde o Pac-Man se move:
+        pontuacaoAtual = Pontuacao.atualizar_pontuacao(pacman, dimensoesMapa.plano)
+        if dimensoesMapa.coletar_fruta(pacman.linha, pacman.coluna):
+            pontuacaoAtual += 10  # Incrementa a pontuação se uma fruta foi coletada
+
+        #Atualizando a pontuação:
         pontuacaoAtual = Pontuacao.atualizar_pontuacao(pacman, dimensoesMapa.plano)
         pontuacaoTotal += pontuacaoAtual
         print(f"\nPontuação: {pontuacaoTotal}", end='', flush=True)
+        
 
         #Verifica colisão com fantasmas
         for i, fantasma in enumerate(fantasmas):
@@ -112,23 +134,110 @@ def iniciarJogo(nomeJogador):
                 return
 
 def game_over(nomeJogador, pontuacaoTotal):
-    os.system('cls')  # Limpa a tela
     tela_game_over = TelaGameOver()
     opcao_game_over = tela_game_over.mostrar_tela_game_over()
+    
+    if opcao_game_over == "1":
+        salvar_pontuacao(nomeJogador, pontuacaoTotal)  # Salvar pontuação ao final da partida
+        WConio2.gotoxy(12, 2)
+        opcao_mostrar_high_scores = input("Deseja ver os high scores? (S/N): ")
+        while opcao_mostrar_high_scores.upper() == "S":
+            os.system('cls') 
+            tela_high_scores = TelaHighScores()
+            tela_high_scores.mostrar_tela_high_scores()
+            break
+        
+        main()  # Reiniciar o jogo
+        return  # Sai da função game_over após reiniciar o jogo
 
-    while True:  # Loop até que uma ação válida seja escolhida
-        if opcao_game_over == "1":
-            salvar_pontuacao(nomeJogador, pontuacaoTotal)  # Salvar pontuação
-            mostrar_high_scores()  # Mostrar high scores
-            main()  # Reiniciar o jogo
-            break  # Sai do loop depois de reiniciar o jogo
-        elif opcao_game_over == "2":
-            os.system('cls')
-            sys.exit()  # Sair do jogo
-            break       
+    elif opcao_game_over == "2":
+        os.system('cls')
+        print("Fim do Jogo!")
+        sys.exit()  # Sair do jogo
+        return 
         
 if __name__ == "__main__":
     main()
 
+import random
 
+class Mapa:
+    #Definição da função INIT, que armazenará variáveis de controle da largura e altura
+    def __init__(self, largura, altura):
+        #Iniciando altura e largura
+        self.largura = largura 
+        self.altura = altura
 
+        #Iniciando uma matriz que representará toda a área do jogo, sendo essa ALTURA x LARGURA
+        self.plano = [['.' for coluna in range(largura)] for linha in range(altura)] #O ponto representa o valor inicial de cada célula na matriz
+        self.bordas() #O método é chamado aqui para criar as bordas desde o inicio do jogo, garantindo solidez e evitando erros
+        self.linhaPacmanAnterior = 0  
+        self.colunaPacmanAnterior = 0  
+        self.FantasmaAnterior = {
+            "LinhaFantasma1": 0,
+            "ColunaFantasma1": 0,
+            "LinhaFantasma2": 0,
+            "ColunaFantasma2": 0,
+            "LinhaFantasma3": 0,
+            "ColunaFantasma3": 0,
+            "LinhaFantasma4": 0,
+            "ColunaFantasma4": 0
+        }
+        self.frutas = []
+            
+
+    def bordas(self):
+        #Método que adiciona as bordas delimitadas por #
+        for i in range(self.largura):
+            self.plano[0][i] = '#' #Tampa
+            self.plano[self.altura - 1][i] = '#' #Fundo
+
+        for i in range(self.altura):
+            self.plano[i][0] = '#' #Lateral esquerda
+            self.plano[i][self.largura - 1] = '#' #Lateral direita 
+
+    def atualizaCaractere(self, caractere, linha, coluna):
+        # Limpa a posição anterior do Pacman
+        self.limparPosicao(self.linhaPacmanAnterior, self.colunaPacmanAnterior)
+
+        # Proteção do script para verificação da linha e coluna dentro do limite máximo
+        if 0 <= linha < self.altura and 0 <= coluna < self.largura:
+            self.linhaPacmanAnterior, self.colunaPacmanAnterior = linha, coluna
+            self.plano[linha][coluna] = caractere
+
+    def atualizaFantasma(self, fantasmas):
+        for i in range(len(fantasmas)):
+            f = fantasmas[i]
+            # Verifica se a próxima posição está vazia ou é o símbolo do Pac-Man antes de mover o fantasma
+            if self.plano[f.linha][f.coluna] == ' ' or self.plano[f.linha][f.coluna] == 'C':
+                self.plano[self.FantasmaAnterior[f"LinhaFantasma{i+1}"]][self.FantasmaAnterior[f"ColunaFantasma{i+1}"]] = ' '  # Limpa a posição anterior do fantasma
+            else:
+                self.plano[self.FantasmaAnterior[f"LinhaFantasma{i+1}"]][self.FantasmaAnterior[f"ColunaFantasma{i+1}"]] = '.'  # Volta o caractere original
+            self.plano[f.linha][f.coluna] = f.fantasma
+            self.FantasmaAnterior[f"LinhaFantasma{i+1}"] = f.linha
+            self.FantasmaAnterior[f"ColunaFantasma{i+1}"] = f.coluna
+            
+    def limparPosicao(self, linha,  coluna):
+        # Limpa a posição anterior do Pacman para dar impressao de movimento
+        self.plano[linha][coluna] = ' '
+
+    def colocar_frutas(self, quantidade):
+        for i in range(quantidade):
+            linha = random.randint(1, self.altura - 2)
+            coluna = random.randint(1, self.largura - 2)
+            if self.plano[linha][coluna] == ' ':
+                self.plano[linha][coluna] = 'O'
+                self.frutas.append((linha, coluna)) 
+
+    def coletar_fruta(self, linha, coluna):
+        # Verifica se o Pac-Man está na posição de uma fruta
+        if (linha, coluna) in self.frutas:
+            self.frutas.remove((linha, coluna))  # Remove a fruta da lista
+            return True  # Retorna True se uma fruta foi coletada
+        return False  # Retorna False se não houve coleta de fruta
+
+    def imprimir(self): #Impressão
+        for linha in self.plano:
+            for caractere in linha:
+                print(caractere, end=' ')
+            print()
