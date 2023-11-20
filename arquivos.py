@@ -18,9 +18,9 @@ def ordenar_pontuacoes():
 
         # Ordenar o dicionário pelo valor (pontuação)
         # reverse=True: Indica que a ordenação deve ser realizada em ordem decrescente.
-        pontuacoes_ordenadas = sorted(pontuacoes_dict.items(), key=lambda item: item[1], reverse=True)
+        pontuacoesOrdenadas = sorted(pontuacoes_dict.items(), key=lambda item: item[1], reverse=True)
 
-        return pontuacoes_ordenadas
+        return pontuacoesOrdenadas
 
     except FileNotFoundError:
         return []  # Retorna uma lista vazia se o arquivo não for encontrados

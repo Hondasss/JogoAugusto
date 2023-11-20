@@ -17,32 +17,32 @@ from arquivos import *
 from pontuacao import Pontuacao
 
 def main():
-    tela_inicial = TelaInicial()
-    opcao_jogador = tela_inicial.mostrar_tela_inicial("1")
+    telaInicial = TelaInicial()
+    opcaoJogador = telaInicial.showTelaInicial("1")
 
-    if opcao_jogador == "1":
-        tela_novo_jogo = TelaNovoJogo()
-        nomeJogador = tela_novo_jogo.mostrar_tela_novo_jogo()
+    if opcaoJogador == "1":
+        telaNovoJogo = TelaNovoJogo()
+        nomeJogador = telaNovoJogo.mostrarNovoJogo()
         iniciarJogo(nomeJogador,"1")
-    if opcao_jogador == "2":
-        tela_novo_jogo = TelaNovoJogo()
-        nomeJogador = tela_novo_jogo.mostrar_tela_novo_jogo()
+    if opcaoJogador == "2":
+        telaNovoJogo = TelaNovoJogo()
+        nomeJogador = telaNovoJogo.mostrarNovoJogo()
         iniciarJogo(nomeJogador,"2")
 
-    elif opcao_jogador == "3":
-        tela_high_scores = TelaHighScores()
-        tela_high_scores.mostrar_tela_high_scores()
+    elif opcaoJogador == "3":
+        telaHighScore = TelaHighScores()
+        telaHighScore.mostrarHighscore()
 
     os.system('cls')  # Limpa a tela antes de sair do jogo
     print("Fim do Jogo!")
 
 # Função para salvar a pontuação
-def salvar_pontuacao(nome_jogador, pontuacao):
+def salvarPontuacao(nome_jogador, pontuacao):
     with open('ranking.txt', 'a') as arquivo:
         arquivo.write(f"{nome_jogador}: {pontuacao}\n")
 
 # Função para mostrar os high scores
-def mostrar_high_scores():
+def mostrarHighScore():
     try:
         with open('ranking.txt', 'r') as arquivo:
             pontuacoes = []
@@ -50,15 +50,15 @@ def mostrar_high_scores():
                 nome, pontuacao = linha.strip().split(': ')
                 pontuacoes.append((nome, int(pontuacao)))
             
-            pontuacoes_ordenadas = sorted(pontuacoes, key=lambda x: x[1], reverse=True)
+            pontuacoesOrdenadas = sorted(pontuacoes, key=lambda x: x[1], reverse=True)
             
             print("Pontuações mais altas:")
-            for idx, (nome, pontuacao) in enumerate(pontuacoes_ordenadas, start=1):
+            for idx, (nome, pontuacao) in enumerate(pontuacoesOrdenadas, start=1):
                 print(f"{idx}. {nome}: {pontuacao}")
     except FileNotFoundError:
         print("Ainda não há pontuações salvas.")
 
-def iniciarJogo(nomeJogador, opcao_jogador):
+def iniciarJogo(nomeJogador, opcaoJogador):
     os.system('cls')
     #Declarando instâncias das classes
     dimensoesMapa = Mapa(largura=23, altura=23) #Definindo um mapa 23x23
@@ -73,9 +73,9 @@ def iniciarJogo(nomeJogador, opcao_jogador):
     paredes = Paredes(dimensoesMapa.plano)
     pontuacaoTotal = 0 
 
-    if opcao_jogador == "1":
+    if opcaoJogador == "1":
         paredes.configurarMapa() #Aqui colocamos as paredes do mapa
-    elif opcao_jogador == "2":
+    elif opcaoJogador == "2":
         paredes.configurarMapa2()
     
     dimensoesMapa.colocar_frutas(3)
@@ -117,12 +117,12 @@ def iniciarJogo(nomeJogador, opcao_jogador):
             else:
                 fantasmas[i].moverEsquerda(dimensoesMapa.plano)
 
-        pontuacaoAtual = Pontuacao.atualizar_pontuacao(pacman, dimensoesMapa.plano)
+        pontuacaoAtual = Pontuacao.atualizarPontuacao(pacman, dimensoesMapa.plano)
         if dimensoesMapa.coletar_fruta(pacman.linha, pacman.coluna):
             pontuacaoAtual += 10  # Incrementa a pontuação se uma fruta foi coletada
 
         #Atualizando a pontuação:
-        pontuacaoAtual = Pontuacao.atualizar_pontuacao(pacman, dimensoesMapa.plano)
+        pontuacaoAtual = Pontuacao.atualizarPontuacao(pacman, dimensoesMapa.plano)
         pontuacaoTotal += pontuacaoAtual
         print(f"\nPontuação: {pontuacaoTotal}", end='', flush=True)
         
@@ -130,27 +130,27 @@ def iniciarJogo(nomeJogador, opcao_jogador):
         #Verifica colisão com fantasmas
         for i, fantasma in enumerate(fantasmas):
             if pacman.linha == fantasma.linha and pacman.coluna == fantasma.coluna:
-                game_over(nomeJogador, pontuacaoTotal)
+                gameOver(nomeJogador, pontuacaoTotal)
                 return
 
-def game_over(nomeJogador, pontuacaoTotal):
-    tela_game_over = TelaGameOver()
-    opcao_game_over = tela_game_over.mostrar_tela_game_over()
+def gameOver(nomeJogador, pontuacaoTotal):
+    telaGameOver = TelaGameOver()
+    opcaoGameOver = telaGameOver.showGameOver()
     
-    if opcao_game_over == "1":
-        salvar_pontuacao(nomeJogador, pontuacaoTotal)  # Salvar pontuação ao final da partida
+    if opcaoGameOver == "1":
+        salvarPontuacao(nomeJogador, pontuacaoTotal)  # Salvar pontuação ao final da partida
         WConio2.gotoxy(12, 2)
-        opcao_mostrar_high_scores = input("Deseja ver os high scores? (S/N): ")
-        while opcao_mostrar_high_scores.upper() == "S":
+        opcaoHighscore = input("Deseja ver os high scores? (S/N): ")
+        while opcaoHighscore.upper() == "S":
             os.system('cls') 
-            tela_high_scores = TelaHighScores()
-            tela_high_scores.mostrar_tela_high_scores()
+            telaHighScore = TelaHighScores()
+            telaHighScore.mostrarHighscore()
             break
         
         main()  # Reiniciar o jogo
-        return  # Sai da função game_over após reiniciar o jogo
+        return  # Sai da função gameOver após reiniciar o jogo
 
-    elif opcao_game_over == "2":
+    elif opcaoGameOver == "2":
         os.system('cls')
         print("Fim do Jogo!")
         sys.exit()  # Sair do jogo

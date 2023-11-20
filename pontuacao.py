@@ -15,7 +15,7 @@ class Pontuacao:
         # Posiciona o cursor no início do jogo
         WConio2.gotoxy(0, 0)
 
-    def atualizar_pontuacao(pacman, mapa):
+    def atualizarPontuacao(pacman, mapa):
         if 0 <= pacman.linha < len(mapa) and 0 <= pacman.coluna < len(mapa[0]):
             if mapa[pacman.linha][pacman.coluna] == '.':
                 mapa[pacman.linha][pacman.coluna] = ' '  # Remove o ponto do mapa

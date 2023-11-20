@@ -12,7 +12,7 @@ class TelaBase:
 
 # Tela inicial do jogo
 class TelaInicial(TelaBase):
-    def mostrar_tela_inicial(self, opcao_jogador):
+    def showTelaInicial(self, opcaoJogador):
         self.limpar_tela()
 
         # Impressão do título e opções
@@ -31,10 +31,10 @@ class TelaInicial(TelaBase):
 
         # Posicionar o cursor na tela
         WConio2.gotoxy(24, 9)
-        opcao_jogador = input()
+        opcaoJogador = input()
 
         # Validar a entrada do jogador
-        while opcao_jogador not in ["1", "2", "3"]:
+        while opcaoJogador not in ["1", "2", "3", "4"]:
             self.limpar_tela()
             print("__" * 30)
             print("__" * 30)
@@ -51,13 +51,13 @@ class TelaInicial(TelaBase):
 
             # Posicionar o cursor na tela
             WConio2.gotoxy(24, 8)
-            opcao_jogador = input()
+            opcaoJogador = input()
 
-        return opcao_jogador
+        return opcaoJogador
 
 # Tela para um novo jogo
 class TelaNovoJogo(TelaBase):
-    def mostrar_tela_novo_jogo(self):
+    def mostrarNovoJogo(self):
         self.limpar_tela()
 
         # Solicitar o nome do jogador
@@ -93,9 +93,9 @@ def ordenar_pontuacoes():
             else:
                 print(f"Erro na linha: {linha.strip()}")
 
-        pontuacoes_ordenadas = sorted(pontuacoes, key=lambda item: item[1], reverse=True)
+        pontuacoesOrdenadas = sorted(pontuacoes, key=lambda item: item[1], reverse=True)
 
-        return pontuacoes_ordenadas
+        return pontuacoesOrdenadas
 
     except FileNotFoundError:
         return []  
@@ -105,19 +105,19 @@ def ordenar_pontuacoes():
 
 
 class TelaHighScores(TelaBase):
-    def mostrar_tela_high_scores(self):
+    def mostrarHighscore(self):
         self.limpar_tela()
 
-        pontuacoes_ordenadas = ordenar_pontuacoes()
+        pontuacoesOrdenadas = ordenar_pontuacoes()
 
         print("╔════════════════════════════════════════════════╗")
         print("║               MAIORES PONTUAÇÕES               ║")
         print("╠════════════════════════════════════════════════╣")
 
-        if not pontuacoes_ordenadas:
+        if not pontuacoesOrdenadas:
             print("║                  Sem pontuações                ║")
         else:
-            for i, (nome, pontuacao) in enumerate(pontuacoes_ordenadas, start=1):
+            for i, (nome, pontuacao) in enumerate(pontuacoesOrdenadas, start=1):
                 # Ajuste a formatação para garantir que os campos estejam alinhados corretamente
                 print(f"║  {i}. {nome.ljust(20)}: {str(pontuacao).rjust(5)}{' ' * 16}║")
 
@@ -127,7 +127,7 @@ class TelaHighScores(TelaBase):
 
 
 class TelaGameOver(TelaBase):
-    def mostrar_tela_game_over(self):
+    def showGameOver(self):
         self.limpar_tela()
 
         #Impressão da tela de Game Over
@@ -143,10 +143,10 @@ class TelaGameOver(TelaBase):
         print("__" * 30)
 
         WConio2.gotoxy(24, 7)
-        opcao_jogador = input()
+        opcaoJogador = input()
 
         #Validar a entrad
-        while opcao_jogador not in ["1", "2"]:
+        while opcaoJogador not in ["1", "2"]:
             self.limpar_tela()
             print("__" * 30)
             print("__" * 30)
@@ -160,6 +160,6 @@ class TelaGameOver(TelaBase):
             print("__" * 30)
             
             WConio2.gotoxy(24, 7)
-            opcao_jogador = input()
+            opcaoJogador = input()
 
-        return opcao_jogador
+        return opcaoJogador
