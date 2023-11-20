@@ -39,7 +39,6 @@ def main():
         sys.exit()
 
 
-
 # Função para salvar a pontuação
 def salvarPontuacao(nome_jogador, pontuacao):
     with open('ranking.txt', 'a') as arquivo:
@@ -66,12 +65,12 @@ def iniciarJogo(nomeJogador, opcaoJogador):
     os.system('cls')
     #Declarando instâncias das classes
     dimensoesMapa = Mapa(largura=23, altura=23) #Definindo um mapa 23x23
-    pacman = Pacman("C", 4, 11) #Definindo o simbolo do pacman e sua posição inicial
+    pacman = Pacman("\033[33mC\033[m", 4, 11) #Definindo o simbolo do pacman e sua posição inicial
     fantasmas = [
-        Fantasmas("R", 1, 1),
-        Fantasmas("G", 1, 21),
-        Fantasmas("B", 21, 1),
-        Fantasmas("Y", 21, 21)
+        Fantasmas("\033[0;31mR\033[m", 1, 1),
+        Fantasmas("\033[32mG\033[m", 1, 21),
+        Fantasmas("\033[34mB\033[m", 21, 1),
+        Fantasmas("\033[33mY\033[m", 21, 21)
     ]
     simbolo = ''
     paredes = Paredes(dimensoesMapa.plano)
