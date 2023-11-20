@@ -69,7 +69,7 @@ def iniciarJogo(nomeJogador, opcaoJogador):
     fantasmas = [
         Fantasmas("\033[0;31mR\033[m", 1, 1),
         Fantasmas("\033[32mG\033[m", 1, 21),
-        Fantasmas("\033[34mB\033[m", 21, 1),
+        Fantasmas("\033[94mB\033[m", 21, 1),
         Fantasmas("\033[33mY\033[m", 21, 21)
     ]
     simbolo = ''

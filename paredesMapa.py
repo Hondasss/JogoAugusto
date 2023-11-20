@@ -5,12 +5,12 @@ class Paredes:
     #Função que adiciona as paredes verticais no mapa
     def addLinhaVertical(self, coluna, linhaInicial, altura):
         for i in range(linhaInicial, linhaInicial + altura):
-            self.mapa[i][coluna] = '#'
+            self.mapa[i][coluna] = '\033[34;1m#\033[m'
     
 
     def addLinhaHorizontal(self, linha, colunaInicial, largura):
         for i in range(colunaInicial, colunaInicial + largura):
-            self.mapa[linha][i] = '#'
+            self.mapa[linha][i] = '\033[34;1m#\033[m'
 
     def configurarMapa(paredes):
      #Linhas verticais do mapa

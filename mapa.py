@@ -28,12 +28,12 @@ class Mapa:
     def bordas(self):
         #Método que adiciona as bordas delimitadas por #
         for i in range(self.largura):
-            self.plano[0][i] = '#' #Tampa
-            self.plano[self.altura - 1][i] = '#' #Fundo
+            self.plano[0][i] = '\033[34;1m#\033[m' #Tampa
+            self.plano[self.altura - 1][i] = '\033[34;1m#\033[m' #Fundo
 
         for i in range(self.altura):
-            self.plano[i][0] = '#' #Lateral esquerda
-            self.plano[i][self.largura - 1] = '#' #Lateral direita 
+            self.plano[i][0] = '\033[34;1m#\033[m' #Lateral esquerda
+            self.plano[i][self.largura - 1] = '\033[34;1m#\033[m' #Lateral direita 
 
     def atualizaCaractere(self, caractere, linha, coluna):
         # Limpa a posição anterior do Pacman
