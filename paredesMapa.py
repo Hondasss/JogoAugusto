@@ -7,7 +7,7 @@ class Paredes:
         for i in range(linhaInicial, linhaInicial + altura):
             self.mapa[i][coluna] = '\033[34;1m#\033[m'
     
-
+    #Função que adiciona as paredes horizontais no mapa
     def addLinhaHorizontal(self, linha, colunaInicial, largura):
         for i in range(colunaInicial, colunaInicial + largura):
             self.mapa[linha][i] = '\033[34;1m#\033[m'
@@ -29,6 +29,7 @@ class Paredes:
         paredes.addLinhaVertical(coluna=16, linhaInicial=18, altura=2)
         paredes.addLinhaVertical(coluna=20, linhaInicial=7, altura=6)
         paredes.addLinhaVertical(coluna=2, linhaInicial=7, altura=6)
+        paredes.addLinhaVertical(coluna=0, linhaInicial=0, altura=1)
 
     #Linhas horizontais do mapa
         paredes.addLinhaHorizontal(linha=2, colunaInicial=2, largura=3)
@@ -60,6 +61,7 @@ class Paredes:
         paredes.addLinhaHorizontal(linha=18, colunaInicial=8, largura=7)
         paredes.addLinhaHorizontal(linha=20, colunaInicial=2, largura=8)
         paredes.addLinhaHorizontal(linha=20, colunaInicial=13, largura=8)
+        paredes.addLinhaHorizontal(linha=0, colunaInicial=0, largura=1)
 
 
     def configurarMapa2(paredes):

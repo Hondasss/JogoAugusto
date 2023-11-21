@@ -1,8 +1,7 @@
 import os 
 import WConio2 as WConio2
-from arquivos import *
 
-# Classe base para as telas
+#Classe base para as telas
 class TelaBase:
     def limpar_tela(self):
         os.system('cls')
@@ -10,12 +9,12 @@ class TelaBase:
     def aguardar_tecla(self):
         input("Pressione Enter para continuar...")
 
-# Tela inicial do jogo
+#Tela inicial do jogo
 class TelaInicial(TelaBase):
     def showTelaInicial(self, opcaoJogador):
         self.limpar_tela()
 
-        # Impressão do título e opções
+        #Impressão do título e opções
         print("__" * 30)
         print("__" * 30)
         print("__" + 22 * " " + "PAC MAN" + 27 * " " + "__")
@@ -29,11 +28,11 @@ class TelaInicial(TelaBase):
         print("__" * 30)
         print("__" * 30)
 
-        # Posicionar o cursor na tela
+        #Cursor no começo do CMD
         WConio2.gotoxy(24, 9)
         opcaoJogador = input()
 
-        # Validar a entrada do jogador
+        #Valida a entrada do jogador, sendo suas opções 1, 2, 3, 4
         while opcaoJogador not in ["1", "2", "3", "4"]:
             self.limpar_tela()
             print("__" * 30)
@@ -49,18 +48,17 @@ class TelaInicial(TelaBase):
             print("__" * 30)
             print("__" * 30)
 
-            # Posicionar o cursor na tela
             WConio2.gotoxy(24, 8)
             opcaoJogador = input()
 
         return opcaoJogador
 
-# Tela para um novo jogo
+#Tela para um novo jogo
 class TelaNovoJogo(TelaBase):
     def mostrarNovoJogo(self):
         self.limpar_tela()
 
-        # Solicitar o nome do jogador
+        #Solicita o nome do jogador
         print("__" * 30)
         print("__" * 30)
         print("__    Digite seu nome: " + 35 * " " + "__")
@@ -70,14 +68,13 @@ class TelaNovoJogo(TelaBase):
         print("__" * 30)
         print("")
             
-        # Posicionar o cursor na tela
         WConio2.gotoxy(23, 2)
 
-        nome_jogador = input()
+        nomeJogador = input()
 
-        return nome_jogador
+        return nomeJogador
 
-# Tela para exibir as pontuações mais altas
+#Tela para exibir as pontuações mais altas
 def ordenar_pontuacoes():
     try:
         with open('ranking.txt', 'r') as arquivo:
@@ -145,7 +142,7 @@ class TelaGameOver(TelaBase):
         WConio2.gotoxy(24, 7)
         opcaoJogador = input()
 
-        #Validar a entrad
+        #Validar a entrada
         while opcaoJogador not in ["1", "2"]:
             self.limpar_tela()
             print("__" * 30)
